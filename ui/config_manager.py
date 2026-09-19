@@ -64,8 +64,8 @@ class ConfigManager:
             "selected_server_id": "hive",
             "bind_port": 19132,
             "auto_ping": True,
-            "bedrock_version": "1.26.45",
-            "protocol_version": 2168,
+            "bedrock_version": "1.26.51",
+            "protocol_version": 2193,
         }
         self.load()
 
@@ -85,9 +85,15 @@ class ConfigManager:
                         if "bind_port" in loaded:
                             self.data["bind_port"] = loaded["bind_port"]
                         if "bedrock_version" in loaded:
-                            self.data["bedrock_version"] = loaded["bedrock_version"]
+                            # Auto-upgrade outdated 1.26.45 default to 1.26.51
+                            bv = loaded["bedrock_version"]
+                            self.data["bedrock_version"] = "1.26.51" if bv == "1.26.45" else bv
                         if "protocol_version" in loaded:
-                            self.data["protocol_version"] = loaded["protocol_version"]
+                            # Auto-upgrade outdated 2168 protocol to 2193
+                            pv = loaded["protocol_version"]
+                            self.data["protocol_version"] = 2193 if pv == 2168 else pv
+                        if loaded.get("bedrock_version") == "1.26.45" or loaded.get("protocol_version") == 2168:
+                            self.save()
             except Exception as e:
                 print(f"Error loading config: {e}")
 
@@ -100,10 +106,10 @@ class ConfigManager:
             print(f"Error saving config: {e}")
 
     def get_bedrock_version(self) -> str:
-        return self.data.get("bedrock_version", "1.26.45")
+        return self.data.get("bedrock_version", "1.26.51")
 
     def get_protocol_version(self) -> int:
-        return self.data.get("protocol_version", 2168)
+        return self.data.get("protocol_version", 2193)
 
     def set_bedrock_version(self, version_str: str, protocol_ver: int):
         self.data["bedrock_version"] = version_str

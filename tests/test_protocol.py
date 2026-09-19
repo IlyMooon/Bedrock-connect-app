@@ -180,13 +180,14 @@ class TestBedrock(unittest.TestCase):
             parse_resource_pack_client_response
         )
 
-        # Test build ResourcePacksInfo for protocol 2168
-        info_pk = build_resource_packs_info(2168)
-        pid, offset = decode_packet_header(info_pk, 0)
-        self.assertEqual(pid, ID_RESOURCE_PACKS_INFO)
+        # Test build ResourcePacksInfo for protocol 2193 (v1.26.51 / 26.51) and 2168
+        for proto in (2193, 2168):
+            info_pk = build_resource_packs_info(proto)
+            pid, offset = decode_packet_header(info_pk, 0)
+            self.assertEqual(pid, ID_RESOURCE_PACKS_INFO)
 
-        # Test build ResourcePackStack for protocol 2168
-        stack_pk = build_resource_pack_stack("1.26.45", 2168)
+        # Test build ResourcePackStack for protocol 2193
+        stack_pk = build_resource_pack_stack("1.26.51", 2193)
         pid, offset = decode_packet_header(stack_pk, 0)
         self.assertEqual(pid, ID_RESOURCE_PACK_STACK)
 
@@ -194,13 +195,13 @@ class TestBedrock(unittest.TestCase):
         dummy_resp_have_packs = bytearray(encode_packet_header(ID_RESOURCE_PACK_CLIENT_RESPONSE))
         dummy_resp_have_packs.extend(encode_varuint32(RESPONSE_STATUS_HAVE_ALL_PACKS - 1))
         dummy_resp_have_packs.extend(encode_string("downloadingfinished"))
-        status = parse_resource_pack_client_response(bytes(dummy_resp_have_packs), 2168)
+        status = parse_resource_pack_client_response(bytes(dummy_resp_have_packs), 2193)
         self.assertEqual(status, RESPONSE_STATUS_HAVE_ALL_PACKS)
 
         dummy_resp_completed = bytearray(encode_packet_header(ID_RESOURCE_PACK_CLIENT_RESPONSE))
         dummy_resp_completed.extend(encode_varuint32(RESPONSE_STATUS_COMPLETED - 1))
         dummy_resp_completed.extend(encode_string("resourcepackstackfinished"))
-        status = parse_resource_pack_client_response(bytes(dummy_resp_completed), 2168)
+        status = parse_resource_pack_client_response(bytes(dummy_resp_completed), 2193)
         self.assertEqual(status, RESPONSE_STATUS_COMPLETED)
 
     def test_start_game_and_world_packets(self):
@@ -215,7 +216,7 @@ class TestBedrock(unittest.TestCase):
             build_player_spawn,
         )
 
-        sg_pk = build_start_game(2168)
+        sg_pk = build_start_game(2193)
         pid, _ = decode_packet_header(sg_pk, 0)
         self.assertEqual(pid, ID_START_GAME)
         self.assertIn(b"LAN Proxy", sg_pk)

@@ -89,7 +89,7 @@ class PingStatusCard(QFrame):
         chip_ver.setObjectName("StatChip")
         chip_ver_layout = QHBoxLayout(chip_ver)
         chip_ver_layout.setContentsMargins(6, 6, 6, 6)
-        self.version_label = QLabel("🏷️ v1.26.45")
+        self.version_label = QLabel("🏷️ v1.26.51")
         self.version_label.setAlignment(Qt.AlignCenter)
         self.version_label.setStyleSheet("color: #94a3b8; font-size: 11px; font-weight: 600;")
         chip_ver_layout.addWidget(self.version_label)
@@ -114,7 +114,7 @@ class PingStatusCard(QFrame):
             latency = result.get("latency_ms", 0)
             players = result.get("current_players", 0)
             max_players = result.get("max_players", 0)
-            version = result.get("version_name", "1.26.45")
+            version = result.get("version_name", "1.26.51")
 
             self.status_badge.setText("● En ligne & Cloné")
             self.status_badge.setObjectName("StatusPill")

@@ -246,7 +246,7 @@ class BedrockTransferServer:
             dest_ip = self.target_host
 
         if self.use_java_engine:
-            self.log("Initialisation du moteur officiel Bedrock (Support monde vide 1.26.45)...", "INFO")
+            self.log("Initialisation du moteur officiel Bedrock (Support monde vide 1.26.51)...", "INFO")
             cmd = [
                 "java",
                 f"-Dbedrock.target_host={dest_ip}",

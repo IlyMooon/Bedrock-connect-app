@@ -61,3 +61,14 @@ C'est **exactement** ainsi que fonctionnent **BedrockTogether** et **BedrockConn
 2. La console affiche **« Connexion au monde... »** puis **« Génération du terrain... »** (vous voyez le ciel / monde temporaire pendant une fraction de seconde).
 3. La console affiche immédiatement **« Transfert vers le serveur... »**.
 4. Vous êtes connecté sur votre serveur externe !
+
+
+---
+
+## 5. 🔄 Mise à jour Minecraft Bedrock 1.26.51 / 26.51 (Protocole 2193)
+
+- **Protocole réseau** : Passage du protocole 2168/2169 au protocole officiel **2193** correspondant à la mise à jour Bedrock **1.26.51** (26.51).
+- **Moteur Java (`BedrockDirectEngine.jar`)** : Mise à jour de la table des codecs (`BedrockProtocol.class`) pour intégrer et définir par défaut le protocole 2193 (avec repli dynamique sur les versions récentes), évitant le blocage « Serveur obsolète » / `LOGIN_FAILED_SERVER_OLD`.
+- **Moteur autonome Python** : Alignement de `CURRENT_PROTOCOL_VERSION = 2193` et `CURRENT_VERSION_STRING = "1.26.51"`.
+- **Interface graphique & Configuration** : Mise à jour des badges de version par défaut, des fallbacks et migration transparente automatique de la configuration locale (`~/.config/bedrock-directconnect/config.json`).
+- **Tests unitaires** : Validation complète du protocole 2193.
